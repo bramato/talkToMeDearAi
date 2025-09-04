@@ -17,31 +17,38 @@ TalkToMeDearAi mira a diventare il sistema di riferimento per la sintesi vocale 
 - [x] Inizializzazione repository Git
 - [x] Documentazione README.md dettagliata
 - [x] Roadmap progetto
+- [x] **Setup Struttura NPM**
+  - [x] Configurazione package.json
+  - [x] Setup TypeScript
+  - [x] Configurazione build pipeline
+  - [x] Configurazione testing framework
+- [x] **Core MCP Server**
+  - [x] Implementazione server base MCP
+  - [x] Registrazione tool `speak_text`
+  - [x] Gestione connessioni client
+  - [x] Sistema logging Winston
+  - [x] Gestione errori completa
+- [x] **Client OpenAI TTS**
+  - [x] Integrazione API OpenAI TTS
+  - [x] Supporto modelli tts-1 e tts-1-hd
+  - [x] Supporto tutte le voci disponibili
+  - [x] Gestione errori e retry
+  - [x] Validazione API key
+- [x] **Sistema Cache MP3**
+  - [x] Hash-based caching system
+  - [x] Gestione storage locale
+  - [x] Cleanup automatico cache
+  - [x] Ottimizzazione performance
+  - [x] Metadata tracking
 
 ### 🔄 In Sviluppo
-- [ ] **Setup Struttura NPM**
-  - [ ] Configurazione package.json
-  - [ ] Setup TypeScript
-  - [ ] Configurazione build pipeline
-  - [ ] Configurazione testing framework
+- [ ] **Sistema di Installazione**
+  - [ ] CLI per setup iniziale
+  - [ ] Gestione sicura chiavi API (keychain)
+  - [ ] Configurazione globale
+  - [ ] Setup guidato interattivo
 
 ### 📅 Pianificato
-- [ ] **Core MCP Server**
-  - [ ] Implementazione server base MCP
-  - [ ] Registrazione tool `speak_text`
-  - [ ] Gestione connessioni client
-
-- [ ] **Client OpenAI TTS**
-  - [ ] Integrazione API OpenAI TTS
-  - [ ] Supporto modelli tts-1 e tts-1-hd
-  - [ ] Supporto tutte le voci disponibili
-  - [ ] Gestione errori e retry
-
-- [ ] **Sistema Cache MP3**
-  - [ ] Hash-based caching system
-  - [ ] Gestione storage locale
-  - [ ] Cleanup automatico cache
-  - [ ] Ottimizzazione performance
 
 ---
 
