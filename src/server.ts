@@ -243,8 +243,8 @@ export class TalkToMeServer {
   }
 
   public async start() {
-    const config = await this.configManager.getConfig();
-    if (!config.openaiApiKey) {
+    const apiKey = await this.configManager.getOpenAIApiKey();
+    if (!apiKey) {
       this.logger.error('OpenAI API key not configured. Run "talktomedeara setup" first.');
       process.exit(1);
     }
@@ -252,6 +252,7 @@ export class TalkToMeServer {
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
     
+    const config = await this.configManager.getConfig();
     this.logger.info('TalkToMe MCP server started successfully', {
       version: '0.1.0-alpha',
       defaultVoice: config.defaultVoice,
