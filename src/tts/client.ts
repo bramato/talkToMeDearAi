@@ -22,13 +22,13 @@ export class TTSClient {
   private async initializeClient(): Promise<void> {
     if (this.openai) return;
 
-    const config = await this.configManager.getConfig();
-    if (!config.openaiApiKey) {
+    const apiKey = await this.configManager.getOpenAIApiKey();
+    if (!apiKey) {
       throw new Error('OpenAI API key not configured. Run "talktomedeara setup" first.');
     }
 
     this.openai = new OpenAI({
-      apiKey: config.openaiApiKey,
+      apiKey: apiKey,
     });
 
     this.logger.info('OpenAI TTS client initialized');
