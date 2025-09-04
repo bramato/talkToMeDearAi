@@ -12,6 +12,38 @@ import * as path from 'path';
 const program = new Command();
 const logger = new Logger();
 
+// Audio playback function
+async function playAudio(audioPath: string): Promise<void> {
+  try {
+    const { exec } = await import('child_process');
+    const { promisify } = await import('util');
+    const execAsync = promisify(exec);
+
+    console.log(`🔊 Playing audio...`);
+
+    // Determine audio player based on platform
+    let command = '';
+    const platform = process.platform;
+
+    if (platform === 'darwin') {
+      command = `afplay "${audioPath}"`;
+    } else if (platform === 'linux') {
+      command = `aplay "${audioPath}" || paplay "${audioPath}" || sox "${audioPath}" -d`;
+    } else if (platform === 'win32') {
+      command = `powershell -c "(New-Object Media.SoundPlayer '${audioPath}').PlaySync();"`;
+    } else {
+      console.warn('⚠️ Unsupported platform for audio playback:', platform);
+      return;
+    }
+
+    await execAsync(command);
+    console.log('✅ Audio playback completed');
+  } catch (error) {
+    console.warn('⚠️ Failed to play audio:', error);
+    // Don't throw error, just log it - the audio file is still saved
+  }
+}
+
 program
   .name('talktomedeara')
   .description('TalkToMeDearAi - MCP server for OpenAI text-to-speech')
@@ -77,9 +109,8 @@ program
 
       if (cachedPath && await fs.pathExists(cachedPath)) {
         console.log(`✅ Found cached audio: ${cachedPath}`);
-        if (!options.saveOnly && !options.output) {
-          console.log(`🔊 Playing audio...`);
-          // Audio playback would happen here in the server
+        if (!options.saveOnly) {
+          await playAudio(cachedPath);
         }
       } else {
         const audioBuffer = await ttsClient.generateSpeech({
@@ -97,6 +128,10 @@ program
 
         console.log(`✅ Audio generated and cached: ${audioPath}`);
         console.log(`   Size: ${(audioBuffer.length / 1024).toFixed(1)} KB`);
+        
+        if (!options.saveOnly) {
+          await playAudio(audioPath);
+        }
       }
 
       console.log(`🎉 Test completed successfully!`);
