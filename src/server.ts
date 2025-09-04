@@ -51,7 +51,7 @@ export class TalkToMeServer {
       const { name, arguments: args } = request.params;
 
       if (name === 'speak_text') {
-        return await this.handleSpeakText(args as TTSRequest);
+        return await this.handleSpeakText(args as unknown as TTSRequest);
       }
 
       throw new McpError(
