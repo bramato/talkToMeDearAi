@@ -210,8 +210,6 @@ export class TalkToMeServer {
   private async playAudio(audioPath: string): Promise<void> {
     try {
       const { exec } = await import('child_process');
-      const { promisify } = await import('util');
-      const execAsync = promisify(exec);
 
       // Determine audio player based on platform
       let command = '';
@@ -228,10 +226,21 @@ export class TalkToMeServer {
         return;
       }
 
-      await execAsync(command);
-      this.logger.info('Audio playback completed', { audioPath });
+      // Start audio playback without waiting for completion
+      const childProcess = exec(command, (error) => {
+        if (error) {
+          this.logger.warn('Failed to play audio', { error, audioPath });
+        } else {
+          this.logger.info('Audio playback completed', { audioPath });
+        }
+      });
+
+      // Log immediately that playback has started
+      this.logger.info('Audio playback started', { audioPath, pid: childProcess.pid });
+      
+      // Return immediately without waiting for completion
     } catch (error) {
-      this.logger.warn('Failed to play audio', { error, audioPath });
+      this.logger.warn('Failed to start audio playback', { error, audioPath });
       // Don't throw error, just log it - the audio file is still saved
     }
   }
