@@ -9,7 +9,7 @@ import {
 import { TTSClient } from './tts/client.js';
 import { CacheManager } from './tts/cache.js';
 import { ConfigManager } from './config/setup.js';
-import { TTSRequest, MCPTool } from './types/index.js';
+import { TTSRequest, MCPTool, AudioNotificationRequest, AudioNotificationType } from './types/index.js';
 import { Logger } from './utils/logger.js';
 
 export class TalkToMeServer {
@@ -43,7 +43,12 @@ export class TalkToMeServer {
   private setupHandlers() {
     this.server.setRequestHandler(ListToolsRequestSchema, async () => {
       return {
-        tools: [this.getSpeakTextTool()],
+        tools: [
+          this.getSpeakTextTool(),
+          this.getStartNotificationTool(),
+          this.getAlertNotificationTool(),
+          this.getFinishNotificationTool(),
+        ],
       };
     });
 
@@ -52,6 +57,18 @@ export class TalkToMeServer {
 
       if (name === 'speak_text') {
         return await this.handleSpeakText(args as unknown as TTSRequest);
+      }
+
+      if (name === 'start_notification') {
+        return await this.handleAudioNotification('start', args as unknown as AudioNotificationRequest);
+      }
+
+      if (name === 'alert_notification') {
+        return await this.handleAudioNotification('alert', args as unknown as AudioNotificationRequest);
+      }
+
+      if (name === 'finish_notification') {
+        return await this.handleAudioNotification('finish', args as unknown as AudioNotificationRequest);
       }
 
       throw new McpError(
@@ -109,6 +126,224 @@ export class TalkToMeServer {
         required: ['text'],
       },
     };
+  }
+
+  private getStartNotificationTool(): MCPTool {
+    return {
+      name: 'start_notification',
+      description: 'Play an energetic audio notification to indicate the start of a process or task',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          message: {
+            type: 'string',
+            description: 'Custom message to announce (optional)',
+            default: 'Processo avviato',
+          },
+          voice: {
+            type: 'string',
+            description: 'Voice to use for the notification',
+            enum: ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'],
+            default: 'nova',
+          },
+          model: {
+            type: 'string',
+            description: 'OpenAI TTS model to use',
+            enum: ['tts-1', 'tts-1-hd'],
+            default: 'tts-1',
+          },
+          saveOnly: {
+            type: 'boolean',
+            description: 'If true, only save the audio file without playing it',
+            default: false,
+          },
+        },
+        required: [],
+      },
+    };
+  }
+
+  private getAlertNotificationTool(): MCPTool {
+    return {
+      name: 'alert_notification',
+      description: 'Play an attention-grabbing audio notification to indicate an alert or important warning',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          message: {
+            type: 'string',
+            description: 'Custom alert message to announce (optional)',
+            default: 'Attenzione! Richiesta immediata',
+          },
+          voice: {
+            type: 'string',
+            description: 'Voice to use for the notification',
+            enum: ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'],
+            default: 'onyx',
+          },
+          model: {
+            type: 'string',
+            description: 'OpenAI TTS model to use',
+            enum: ['tts-1', 'tts-1-hd'],
+            default: 'tts-1',
+          },
+          saveOnly: {
+            type: 'boolean',
+            description: 'If true, only save the audio file without playing it',
+            default: false,
+          },
+        },
+        required: [],
+      },
+    };
+  }
+
+  private getFinishNotificationTool(): MCPTool {
+    return {
+      name: 'finish_notification',
+      description: 'Play a satisfying audio notification to indicate successful completion of a process or task',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          message: {
+            type: 'string',
+            description: 'Custom completion message to announce (optional)',
+            default: 'Operazione completata con successo',
+          },
+          voice: {
+            type: 'string',
+            description: 'Voice to use for the notification',
+            enum: ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'],
+            default: 'alloy',
+          },
+          model: {
+            type: 'string',
+            description: 'OpenAI TTS model to use',
+            enum: ['tts-1', 'tts-1-hd'],
+            default: 'tts-1',
+          },
+          saveOnly: {
+            type: 'boolean',
+            description: 'If true, only save the audio file without playing it',
+            default: false,
+          },
+        },
+        required: [],
+      },
+    };
+  }
+
+  private async handleAudioNotification(type: AudioNotificationType, args: AudioNotificationRequest) {
+    try {
+      const defaultMessages = {
+        start: 'Processo avviato',
+        alert: 'Attenzione! Richiesta immediata',
+        finish: 'Operazione completata con successo'
+      };
+
+      const defaultVoices = {
+        start: 'nova' as const,
+        alert: 'onyx' as const,
+        finish: 'alloy' as const
+      };
+
+      const message = args.message || defaultMessages[type];
+      const voice = args.voice || defaultVoices[type];
+      const model = args.model || 'tts-1';
+
+      this.logger.info(`Processing ${type} notification`, {
+        message,
+        voice,
+        model
+      });
+
+      // Parameters for TTS processing
+      const saveOnly = args.saveOnly || false;
+
+      // Check cache first
+      const cacheKey = this.cacheManager.generateCacheKey(message, voice, model);
+      const cachedPath = await this.cacheManager.get(cacheKey);
+
+      if (cachedPath) {
+        this.logger.info(`Cache hit for ${type} notification`, { cacheKey });
+        
+        if (!saveOnly) {
+          await this.playAudio(cachedPath);
+        }
+
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify({
+                success: true,
+                type,
+                audioPath: cachedPath,
+                cached: true,
+                message: `${type} notification played using cached audio (${voice} voice)`,
+              }),
+            },
+          ],
+        };
+      }
+
+      // Generate new audio
+      const audioBuffer = await this.ttsClient.generateSpeech({
+        text: message,
+        voice,
+        model,
+      });
+
+      // Save to cache
+      const audioPath = await this.cacheManager.set(
+        cacheKey,
+        audioBuffer,
+        {
+          text: message,
+          voice,
+          model,
+        }
+      );
+
+      this.logger.info(`Generated new ${type} notification audio`, { 
+        audioPath,
+        size: audioBuffer.length 
+      });
+
+      if (!saveOnly) {
+        await this.playAudio(audioPath);
+      }
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify({
+              success: true,
+              type,
+              audioPath,
+              cached: false,
+              message: `${type} notification played and cached (${voice} voice)`,
+            }),
+          },
+        ],
+      };
+    } catch (error) {
+      this.logger.error(`Error processing ${type} notification`, { error });
+      
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify({
+              success: false,
+              type,
+              error: error instanceof Error ? error.message : 'Unknown error occurred',
+            }),
+          },
+        ],
+      };
+    }
   }
 
   private async handleSpeakText(args: TTSRequest) {

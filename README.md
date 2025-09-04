@@ -69,6 +69,54 @@ await mcp.callTool("speak_text", {
 });
 ```
 
+#### `start_notification`
+Riproduce una notifica audio energica per indicare l'inizio di un processo
+
+**Parametri:**
+- `message` (string, optional): Messaggio personalizzato da annunciare (default: "Processo avviato")
+- `voice` (string, optional): Voce da utilizzare (default: "nova" per un tono energico)
+- `model` (string, optional): Modello TTS (tts-1, tts-1-hd)
+- `save_only` (boolean, optional): Se true, salva solo senza riprodurre
+
+**Esempio:**
+```javascript
+await mcp.callTool("start_notification", {
+  message: "Iniziamo la compilazione del progetto"
+});
+```
+
+#### `alert_notification`
+Riproduce una notifica audio di attenzione per segnalare avvisi importanti
+
+**Parametri:**
+- `message` (string, optional): Messaggio di avviso personalizzato (default: "Attenzione! Richiesta immediata")
+- `voice` (string, optional): Voce da utilizzare (default: "onyx" per un tono autoritario)
+- `model` (string, optional): Modello TTS (tts-1, tts-1-hd)
+- `save_only` (boolean, optional): Se true, salva solo senza riprodurre
+
+**Esempio:**
+```javascript
+await mcp.callTool("alert_notification", {
+  message: "Errore critico rilevato nel sistema"
+});
+```
+
+#### `finish_notification`
+Riproduce una notifica audio soddisfacente per indicare il completamento di un processo
+
+**Parametri:**
+- `message` (string, optional): Messaggio di completamento personalizzato (default: "Operazione completata con successo")
+- `voice` (string, optional): Voce da utilizzare (default: "alloy" per un tono rassicurante)
+- `model` (string, optional): Modello TTS (tts-1, tts-1-hd)
+- `save_only` (boolean, optional): Se true, salva solo senza riprodurre
+
+**Esempio:**
+```javascript
+await mcp.callTool("finish_notification", {
+  message: "Build completata e deployata con successo!"
+});
+```
+
 ## 📁 Struttura del Progetto
 
 ```

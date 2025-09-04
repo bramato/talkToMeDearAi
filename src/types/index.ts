@@ -55,3 +55,12 @@ export interface SetupQuestions {
   cacheMaxSize: number;
   cacheDuration: number;
 }
+
+export interface AudioNotificationRequest {
+  message?: string;
+  voice?: OpenAIVoice;
+  model?: OpenAIModel;
+  saveOnly?: boolean;
+}
+
+export type AudioNotificationType = 'start' | 'alert' | 'finish';
