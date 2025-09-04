@@ -1,0 +1,55 @@
+# Source files
+src/
+*.ts
+!dist/
+
+# Development
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+__tests__/
+*.test.ts
+*.spec.ts
+jest.config.*
+coverage/
+
+# Build tools
+tsconfig.json
+.eslintrc*
+.prettier*
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Cache and temp
+cache/
+temp/
+tmp/
+logs/
+
+# Git
+.git/
+.gitignore
+
+# NPM
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Development configs
+.nyc_output
+.coverage

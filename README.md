@@ -96,14 +96,20 @@ Per informazioni dettagliate sui prossimi sviluppi, consulta la [ROADMAP](./ROAD
 ## 🤝 Integrazione con IDE
 
 ### Claude Code
-1. Installa il pacchetto globalmente
-2. Aggiungi la configurazione MCP
-3. Riavvia Claude Code
+Guida completa: [📘 Claude Code Integration](./docs/CLAUDE_CODE_INTEGRATION.md)
 
-### Cursor
-1. Installa il pacchetto globalmente
-2. Configura nel file MCP settings
-3. Utilizza il tool `speak_text` nei tuoi agenti
+1. `npm install -g talktomedeara && talktomedeara setup`
+2. Aggiungi configurazione MCP
+3. Riavvia Claude Code
+4. Usa il tool `speak_text` nei tuoi agenti
+
+### Cursor  
+Guida completa: [📘 Cursor Integration](./docs/CURSOR_INTEGRATION.md)
+
+1. `npm install -g talktomedeara && talktomedeara setup`
+2. Configura MCP settings
+3. Integra con build scripts e development workflow
+4. Ricevi notifiche vocali durante lo sviluppo
 
 ## 🔧 Configurazione Avanzata
 
@@ -186,8 +192,8 @@ MIT License - vedi [LICENSE](LICENSE) per i dettagli.
 
 ## 🆘 Supporto
 
-- **Issues**: [GitHub Issues](https://github.com/username/talktomedeara/issues)
-- **Discussioni**: [GitHub Discussions](https://github.com/username/talktomedeara/discussions)
+- **Issues**: [GitHub Issues](https://github.com/bramato/talkToMeDearAi/issues)
+- **Discussioni**: [GitHub Discussions](https://github.com/bramato/talkToMeDearAi/discussions)
 - **Email**: support@talktomedeara.dev
 
 ---

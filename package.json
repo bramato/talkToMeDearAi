@@ -37,12 +37,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/username/talktomedeara.git"
+    "url": "https://github.com/bramato/talkToMeDearAi.git"
   },
   "bugs": {
-    "url": "https://github.com/username/talktomedeara/issues"
+    "url": "https://github.com/bramato/talkToMeDearAi/issues"
   },
-  "homepage": "https://github.com/username/talktomedeara#readme",
+  "homepage": "https://github.com/bramato/talkToMeDearAi#readme",
   "engines": {
     "node": ">=18.0.0"
   },
