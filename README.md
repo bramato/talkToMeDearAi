@@ -2,7 +2,7 @@
 
 An MCP (Model Context Protocol) server for text-to-speech synthesis using the OpenAI TTS API, designed to provide audio notifications for AI agents.
 
-> **📦 Package Renamed:** This package was previously published as `talktomedeara` but has been renamed to `talktomedearai` for better consistency. The old package name is deprecated but will continue to work with automatic redirection.
+> **📦 Package Available:** This package is available on npm as `talktomedearai` - an MCP server for text-to-speech synthesis with intelligent caching.
 
 ## 🎯 Overview
 
