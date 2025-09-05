@@ -1,41 +1,41 @@
 # TalkToMeDearAi
 
-Un MCP (Model Context Protocol) server per la sintesi vocale di testo utilizzando l'API OpenAI TTS, progettato per fornire notifiche audio agli agenti AI.
+An MCP (Model Context Protocol) server for text-to-speech synthesis using the OpenAI TTS API, designed to provide audio notifications for AI agents.
 
-## 🎯 Panoramica
+## 🎯 Overview
 
-TalkToMeDearAi è un server MCP specializzato che permette agli agenti AI di convertire testo in audio utilizzando i modelli text-to-speech di OpenAI. Il sistema include un sistema di cache intelligente per evitare chiamate API duplicate e ridurre i costi.
+TalkToMeDearAi is a specialized MCP server that allows AI agents to convert text to audio using OpenAI's text-to-speech models. The system includes an intelligent cache system to avoid duplicate API calls and reduce costs.
 
-## ✨ Caratteristiche Principali
+## ✨ Key Features
 
-- **Sintesi Vocale OpenAI**: Utilizza i migliori modelli TTS di OpenAI per una qualità audio superiore
-- **Cache MP3 Intelligente**: Salva automaticamente l'audio generato per riutilizzo futuro
-- **Installazione Globale**: Può essere installato globalmente e utilizzato da più progetti
-- **Integrazione MCP**: Compatibile con Claude Code, Cursor e altri client MCP
-- **Notifiche per Agenti**: Perfetto per notifiche audio al completamento di processi
-- **Configurazione Semplice**: Setup guidato per le chiavi API OpenAI
+- **OpenAI Voice Synthesis**: Uses OpenAI's best TTS models for superior audio quality
+- **Intelligent MP3 Cache**: Automatically saves generated audio for future reuse
+- **Global Installation**: Can be installed globally and used by multiple projects
+- **MCP Integration**: Compatible with Claude Code, Cursor, and other MCP clients
+- **Agent Notifications**: Perfect for audio notifications on process completion
+- **Simple Configuration**: Guided setup for OpenAI API keys
 
-## 🚀 Installazione Rapida
+## 🚀 Quick Installation
 
 ```bash
-# Installazione globale
+# Global installation
 npm install -g talktomedeara
 
-# Configurazione chiavi OpenAI
+# OpenAI API keys configuration
 talktomedeara setup
 ```
 
-## 📋 Requisiti
+## 📋 Requirements
 
 - Node.js >= 18.0.0
-- Chiave API OpenAI con accesso ai modelli TTS
-- Sistema operativo: macOS, Linux, Windows
+- OpenAI API key with access to TTS models
+- Operating system: macOS, Linux, Windows
 
-## 🛠️ Utilizzo
+## 🛠️ Usage
 
-### Come MCP Server
+### As MCP Server
 
-Aggiungi al tuo file di configurazione MCP:
+Add to your MCP configuration file:
 
 ```json
 {
@@ -48,90 +48,95 @@ Aggiungi al tuo file di configurazione MCP:
 }
 ```
 
-### Tool Disponibili
+### Available Tools
 
 #### `speak_text`
-Converte testo in audio e lo riproduce o salva
+Converts text to audio and plays or saves it
 
-**Parametri:**
-- `text` (string, required): Il testo da convertire in audio
-- `voice` (string, optional): Voce da utilizzare (alloy, echo, fable, onyx, nova, shimmer)
-- `model` (string, optional): Modello TTS (tts-1, tts-1-hd)
-- `save_only` (boolean, optional): Se true, salva solo senza riprodurre
-- `output_path` (string, optional): Percorso personalizzato per salvare il file
+**Parameters:**
+- `text` (string, required): The text to convert to audio
+- `voice` (string, optional): Voice to use (alloy, echo, fable, onyx, nova, shimmer)
+- `model` (string, optional): TTS model (tts-1, tts-1-hd)
+- `save_only` (boolean, optional): If true, only saves without playing
+- `output_path` (string, optional): Custom path to save the file
 
-**Esempio:**
+**Example:**
 ```javascript
 await mcp.callTool("speak_text", {
-  text: "Processo completato con successo!",
+  text: "Process completed successfully!",
   voice: "alloy",
   model: "tts-1-hd"
 });
 ```
 
 #### `start_notification`
-Riproduce una notifica audio energica per indicare l'inizio di un processo
+Plays a predefined energetic audio notification to indicate the start of a process
 
-**Parametri:**
-- `message` (string, optional): Messaggio personalizzato da annunciare (default: "Processo avviato")
-- `voice` (string, optional): Voce da utilizzare (default: "nova" per un tono energico)
-- `model` (string, optional): Modello TTS (tts-1, tts-1-hd)
-- `save_only` (boolean, optional): Se true, salva solo senza riprodurre
+**Uses file:** `sounds/start.mp3` (customizable by replacing the file)
 
-**Esempio:**
+**Parameters:**
+- `save_only` (boolean, optional): If true, only saves without playing
+
+**Example:**
 ```javascript
-await mcp.callTool("start_notification", {
-  message: "Iniziamo la compilazione del progetto"
-});
+await mcp.callTool("start_notification", {});
 ```
 
 #### `alert_notification`
-Riproduce una notifica audio di attenzione per segnalare avvisi importanti
+Plays a predefined attention-grabbing audio notification to signal important warnings
 
-**Parametri:**
-- `message` (string, optional): Messaggio di avviso personalizzato (default: "Attenzione! Richiesta immediata")
-- `voice` (string, optional): Voce da utilizzare (default: "onyx" per un tono autoritario)
-- `model` (string, optional): Modello TTS (tts-1, tts-1-hd)
-- `save_only` (boolean, optional): Se true, salva solo senza riprodurre
+**Uses file:** `sounds/alert.mp3` (customizable by replacing the file)
 
-**Esempio:**
+**Parameters:**
+- `save_only` (boolean, optional): If true, only saves without playing
+
+**Example:**
 ```javascript
-await mcp.callTool("alert_notification", {
-  message: "Errore critico rilevato nel sistema"
-});
+await mcp.callTool("alert_notification", {});
 ```
 
 #### `finish_notification`
-Riproduce una notifica audio soddisfacente per indicare il completamento di un processo
+Plays a predefined satisfying audio notification to indicate process completion
 
-**Parametri:**
-- `message` (string, optional): Messaggio di completamento personalizzato (default: "Operazione completata con successo")
-- `voice` (string, optional): Voce da utilizzare (default: "alloy" per un tono rassicurante)
-- `model` (string, optional): Modello TTS (tts-1, tts-1-hd)
-- `save_only` (boolean, optional): Se true, salva solo senza riprodurre
+**Uses file:** `sounds/finish.mp3` (customizable by replacing the file)
 
-**Esempio:**
+**Parameters:**
+- `save_only` (boolean, optional): If true, only saves without playing
+
+**Example:**
 ```javascript
-await mcp.callTool("finish_notification", {
-  message: "Build completata e deployata con successo!"
-});
+await mcp.callTool("finish_notification", {});
 ```
 
-## 📁 Struttura del Progetto
+### 🔊 Sound Customization
+
+To customize notification sounds, simply replace the files in the `sounds/` directory:
+
+```bash
+# In project directory or global package
+sounds/
+├── start.mp3   # Start sound
+├── alert.mp3   # Alert sound
+└── finish.mp3  # Completion sound
+```
+
+The tools search first in the local project directory, then in the global package installation directory.
+
+## 📁 Project Structure
 
 ```
 talktomedeara/
 ├── src/
-│   ├── server.ts          # Server MCP principale
+│   ├── server.ts          # Main MCP server
 │   ├── tts/
-│   │   ├── client.ts      # Client OpenAI TTS
-│   │   └── cache.ts       # Sistema di cache MP3
+│   │   ├── client.ts      # OpenAI TTS client
+│   │   └── cache.ts       # MP3 cache system
 │   ├── config/
-│   │   └── setup.ts       # Configurazione chiavi API
+│   │   └── setup.ts       # API keys configuration
 │   └── tools/
-│       └── speak.ts       # Tool per sintesi vocale
+│       └── speak.ts       # Speech synthesis tool
 ├── dist/                  # Build output
-├── cache/                 # Cache file MP3
+├── cache/                 # MP3 cache files
 ├── package.json
 ├── tsconfig.json
 └── README.md
@@ -139,111 +144,116 @@ talktomedeara/
 
 ## 🗺️ Roadmap
 
-Per informazioni dettagliate sui prossimi sviluppi, consulta la [ROADMAP](./ROADMAP.md).
+For detailed information on upcoming developments, see the [ROADMAP](./ROADMAP.md).
 
-## 🤝 Integrazione con IDE
+## 🤝 IDE Integration
 
 ### Claude Code
-Guida completa: [📘 Claude Code Integration](./docs/CLAUDE_CODE_INTEGRATION.md)
+Complete guide: [📘 Claude Code Integration](./docs/CLAUDE_CODE_INTEGRATION.md)
 
 1. `npm install -g talktomedeara && talktomedeara setup`
-2. Aggiungi configurazione MCP
-3. Riavvia Claude Code
-4. Usa il tool `speak_text` nei tuoi agenti
+2. Add MCP configuration
+3. Restart Claude Code
+4. Use the `speak_text` tool in your agents
 
 ### Cursor  
-Guida completa: [📘 Cursor Integration](./docs/CURSOR_INTEGRATION.md)
+Complete guide: [📘 Cursor Integration](./docs/CURSOR_INTEGRATION.md)
 
 1. `npm install -g talktomedeara && talktomedeara setup`
-2. Configura MCP settings
-3. Integra con build scripts e development workflow
-4. Ricevi notifiche vocali durante lo sviluppo
+2. Configure MCP settings
+3. Integrate with build scripts and development workflow
+4. Receive voice notifications during development
 
-## 🔧 Configurazione Avanzata
+## 🔧 Advanced Configuration
 
 ### Cache Settings
 ```bash
-# Imposta dimensione massima cache (MB)
+# Set maximum cache size (MB)
 talktomedeara config --cache-size 500
 
-# Imposta durata cache (giorni)
+# Set cache duration (days)
 talktomedeara config --cache-duration 30
 
-# Svuota cache
+# Clear cache
 talktomedeara cache clear
 ```
 
 ### Voice Models
-Il sistema supporta tutti i modelli TTS OpenAI:
-- `tts-1`: Veloce e efficiente
-- `tts-1-hd`: Alta qualità audio
+The system supports all OpenAI TTS models:
+- `tts-1`: Fast and efficient
+- `tts-1-hd`: High audio quality
 
-### Voices Disponibili
-- `alloy`: Neutrale e bilanciata
-- `echo`: Maschile e chiara
-- `fable`: Espressiva e drammatica
-- `onyx`: Profonda e autoritaria
-- `nova`: Giovane e energica
-- `shimmer`: Dolce e melodiosa
+### Available Voices
+- `alloy`: Neutral and balanced
+- `echo`: Male and clear
+- `fable`: Expressive and dramatic
+- `onyx`: Deep and authoritative
+- `nova`: Young and energetic
+- `shimmer`: Sweet and melodious
 
-## 📊 Gestione Cache
+## 📊 Cache Management
 
-Il sistema di cache salva automaticamente tutti i file audio generati con hash basato su:
-- Contenuto del testo
-- Voce selezionata
-- Modello utilizzato
+The cache system automatically saves all generated audio files with hash based on:
+- Text content
+- Selected voice
+- Used model
 
-Questo garantisce il riutilizzo immediato per testi identici e riduce drasticamente i costi API.
+This ensures immediate reuse for identical texts and drastically reduces API costs.
 
 ## 🐛 Troubleshooting
 
-### Problemi Comuni
+### Common Issues
 
-1. **"API Key non configurata"**
+1. **"API Key not configured"**
    ```bash
    talktomedeara setup
    ```
 
-2. **"Impossibile riprodurre audio"**
-   - Verifica che il sistema abbia un player audio configurato
-   - Su Linux potrebbe essere necessario installare `sox` o `aplay`
+2. **"Cannot play audio"**
+   - Verify that the system has an audio player configured
+   - On Linux you might need to install `sox` or `aplay`
 
-3. **"Cache piena"**
+3. **"Cache full"**
    ```bash
    talktomedeara cache clean --older-than 7d
    ```
 
-## 🔐 Sicurezza
+## 🔐 Security
 
-- Le chiavi API sono memorizzate in modo sicuro nel keychain del sistema
-- I file cache sono memorizzati localmente e non condivisi
-- Tutti i dati audio sono processati localmente dopo il download
+- API keys are stored securely in the system keychain
+- Cache files are stored locally and not shared
+- All audio data is processed locally after download
 
 ## 📈 Performance
 
-- Cache hit rate tipico: 85-95%
-- Riduzione costi API: fino al 90%
-- Tempo risposta cache: <50ms
-- Latenza API OpenAI: 1-3 secondi
+- Typical cache hit rate: 85-95%
+- API cost reduction: up to 90%
+- Cache response time: <50ms
+- OpenAI API latency: 1-3 seconds
 
-## 🤝 Contribuire
+## 🤝 Contributing
 
-1. Fork del repository
-2. Crea un branch per la feature (`git checkout -b feature/amazing-feature`)
-3. Commit delle modifiche (`git commit -m 'Add amazing feature'`)
-4. Push al branch (`git push origin feature/amazing-feature`)
-5. Apri una Pull Request
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## 📄 Licenza
+## 📄 License
 
-MIT License - vedi [LICENSE](LICENSE) per i dettagli.
+MIT License - see [LICENSE](LICENSE) for details.
 
-## 🆘 Supporto
+## 🆘 Support
 
 - **Issues**: [GitHub Issues](https://github.com/bramato/talkToMeDearAi/issues)
-- **Discussioni**: [GitHub Discussions](https://github.com/bramato/talkToMeDearAi/discussions)
+- **Discussions**: [GitHub Discussions](https://github.com/bramato/talkToMeDearAi/discussions)
 - **Email**: support@talktomedeara.dev
+
+## 📧 Contact
+
+- **Author**: Marco Bramato
+- **Email**: marco@bramato.com
 
 ---
 
-**Nota**: Questo progetto è ottimizzato per l'uso con agenti AI e sistemi di automazione. Per un uso generale di TTS, considera alternative più semplici.
+**Note**: This project is optimized for use with AI agents and automation systems. For general TTS use, consider simpler alternatives.
