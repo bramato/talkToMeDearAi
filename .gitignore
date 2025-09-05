@@ -136,6 +136,7 @@ audio-cache/
 config/local.json
 .api-keys
 .openai-key
+.mcp/
 
 # IDE
 .vscode/

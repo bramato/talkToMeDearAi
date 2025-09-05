@@ -6,7 +6,7 @@ export class Logger {
   private logger: winston.Logger;
 
   constructor() {
-    const logsDir = path.join(process.cwd(), 'logs');
+    const logsDir = path.join(process.cwd(), '.mcp', 'talktomedearai', 'logs');
     fs.ensureDirSync(logsDir);
 
     this.logger = winston.createLogger({

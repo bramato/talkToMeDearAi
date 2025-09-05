@@ -13,7 +13,7 @@ export class CacheManager {
   private maxCacheAge: number = 30 * 24 * 60 * 60 * 1000; // 30 days default
 
   constructor(cacheDir?: string, logger?: Logger) {
-    this.cacheDir = cacheDir || path.join(process.cwd(), 'cache');
+    this.cacheDir = cacheDir || path.join(process.cwd(), '.mcp', 'talktomedearai', 'cache');
     this.metadataFile = path.join(this.cacheDir, 'metadata.json');
     this.logger = logger || new Logger();
     this.initializeCache();
