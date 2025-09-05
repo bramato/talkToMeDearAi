@@ -1,6 +1,6 @@
 {
   "name": "talktomedearai",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "MCP server for text-to-speech using OpenAI TTS with intelligent MP3 caching for AI agent notifications",
   "main": "dist/index.js",
   "bin": {
