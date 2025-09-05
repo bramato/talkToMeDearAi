@@ -8,10 +8,10 @@ This guide explains how to integrate TalkToMeDearAi with Claude Code to receive 
 
 ```bash
 # Global installation
-npm install -g talktomedeara
+npm install -g talktomedearai
 
 # Initial configuration
-talktomedeara setup
+talktomedearai setup
 ```
 
 During setup you will be asked:
@@ -34,8 +34,8 @@ Add TalkToMeDearAi to your Claude Code MCP configuration.
 ```json
 {
   "mcpServers": {
-    "talktomedeara": {
-      "command": "talktomedeara",
+    "talktomedearai": {
+      "command": "talktomedearai",
       "args": ["serve"],
       "env": {}
     }
@@ -178,8 +178,8 @@ For teams sharing the same configuration:
 ```json
 {
   "mcpServers": {
-    "talktomedeara": {
-      "command": "talktomedeara",
+    "talktomedearai": {
+      "command": "talktomedearai",
       "args": ["serve"],
       "env": {
         "TALKTOMEDEARA_DEFAULT_VOICE": "alloy",
@@ -209,7 +209,7 @@ talktomedeara doctor
 #### 2. "API Key not configured"
 ```bash
 # Reconfigure
-talktomedeara setup
+talktomedearai setup
 
 # Or configure manually
 talktomedeara config show

@@ -8,10 +8,10 @@ This guide explains how to integrate TalkToMeDearAi with Cursor to receive audio
 
 ```bash
 # Installation via npm
-npm install -g talktomedeara
+npm install -g talktomedearai
 
 # Interactive configuration
-talktomedeara setup
+talktomedearai setup
 ```
 
 The setup will guide you through:
@@ -33,8 +33,8 @@ Cursor supports MCP through JSON configuration. Create or modify:
 ```json
 {
   "mcpServers": {
-    "talktomedeara": {
-      "command": "talktomedeara",
+    "talktomedearai": {
+      "command": "talktomedearai",
       "args": ["serve"],
       "description": "Text-to-speech notifications for AI agents",
       "env": {
@@ -300,7 +300,7 @@ function throttledNotify(message) {
 # Dockerfile for dev container with TTS
 FROM node:18
 
-RUN npm install -g talktomedeara
+RUN npm install -g talktomedearai
 # API key via secret mount
 RUN mkdir -p /root/.talktomedeara
 
@@ -349,11 +349,11 @@ jobs:
         node-version: '18'
     
     - name: Install TalkToMeDearAi
-      run: npm install -g talktomedeara
+      run: npm install -g talktomedearai
       
     - name: Configure TTS
       run: |
-        echo "$OPENAI_API_KEY" | talktomedeara setup --api-key-stdin
+        echo "$OPENAI_API_KEY" | talktomedearai setup --api-key-stdin
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     

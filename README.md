@@ -2,6 +2,8 @@
 
 An MCP (Model Context Protocol) server for text-to-speech synthesis using the OpenAI TTS API, designed to provide audio notifications for AI agents.
 
+> **📦 Package Renamed:** This package was previously published as `talktomedeara` but has been renamed to `talktomedearai` for better consistency. The old package name is deprecated but will continue to work with automatic redirection.
+
 ## 🎯 Overview
 
 TalkToMeDearAi is a specialized MCP server that allows AI agents to convert text to audio using OpenAI's text-to-speech models. The system includes an intelligent cache system to avoid duplicate API calls and reduce costs.
@@ -19,10 +21,10 @@ TalkToMeDearAi is a specialized MCP server that allows AI agents to convert text
 
 ```bash
 # Global installation
-npm install -g talktomedeara
+npm install -g talktomedearai
 
 # OpenAI API keys configuration
-talktomedeara setup
+talktomedearai setup
 ```
 
 ## 📋 Requirements
@@ -40,8 +42,8 @@ Add to your MCP configuration file:
 ```json
 {
   "mcpServers": {
-    "talktomedeara": {
-      "command": "talktomedeara",
+    "talktomedearai": {
+      "command": "talktomedearai",
       "args": ["serve"]
     }
   }
@@ -125,7 +127,7 @@ The tools search first in the local project directory, then in the global packag
 ## 📁 Project Structure
 
 ```
-talktomedeara/
+talktomedearai/
 ├── src/
 │   ├── server.ts          # Main MCP server
 │   ├── tts/
@@ -151,7 +153,7 @@ For detailed information on upcoming developments, see the [ROADMAP](./ROADMAP.m
 ### Claude Code
 Complete guide: [📘 Claude Code Integration](./docs/CLAUDE_CODE_INTEGRATION.md)
 
-1. `npm install -g talktomedeara && talktomedeara setup`
+1. `npm install -g talktomedearai && talktomedearai setup`
 2. Add MCP configuration
 3. Restart Claude Code
 4. Use the `speak_text` tool in your agents
@@ -159,7 +161,7 @@ Complete guide: [📘 Claude Code Integration](./docs/CLAUDE_CODE_INTEGRATION.md
 ### Cursor  
 Complete guide: [📘 Cursor Integration](./docs/CURSOR_INTEGRATION.md)
 
-1. `npm install -g talktomedeara && talktomedeara setup`
+1. `npm install -g talktomedearai && talktomedearai setup`
 2. Configure MCP settings
 3. Integrate with build scripts and development workflow
 4. Receive voice notifications during development
@@ -169,13 +171,13 @@ Complete guide: [📘 Cursor Integration](./docs/CURSOR_INTEGRATION.md)
 ### Cache Settings
 ```bash
 # Set maximum cache size (MB)
-talktomedeara config --cache-size 500
+talktomedearai config --cache-size 500
 
 # Set cache duration (days)
-talktomedeara config --cache-duration 30
+talktomedearai config --cache-duration 30
 
 # Clear cache
-talktomedeara cache clear
+talktomedearai cache clear
 ```
 
 ### Voice Models
@@ -206,7 +208,7 @@ This ensures immediate reuse for identical texts and drastically reduces API cos
 
 1. **"API Key not configured"**
    ```bash
-   talktomedeara setup
+   talktomedearai setup
    ```
 
 2. **"Cannot play audio"**
@@ -215,7 +217,7 @@ This ensures immediate reuse for identical texts and drastically reduces API cos
 
 3. **"Cache full"**
    ```bash
-   talktomedeara cache clean --older-than 7d
+   talktomedearai cache clean --older-than 7d
    ```
 
 ## 🔐 Security
@@ -247,7 +249,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 - **Issues**: [GitHub Issues](https://github.com/bramato/talkToMeDearAi/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/bramato/talkToMeDearAi/discussions)
-- **Email**: support@talktomedeara.dev
+- **Email**: support@talktomedearai.dev
 
 ## 📧 Contact
 

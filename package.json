@@ -1,10 +1,10 @@
 {
-  "name": "talktomedearai",
-  "version": "0.1.4",
-  "description": "MCP server for text-to-speech using OpenAI TTS with intelligent MP3 caching for AI agent notifications",
-  "main": "dist/index.js",
+  "name": "talktomedeara",
+  "version": "0.1.5",
+  "description": "⚠️ DEPRECATED: This package has been renamed to 'talktomedearai'. Please install the new package: npm install -g talktomedearai",
+  "main": "transition-notice.js",
   "bin": {
-    "talktomedearai": "dist/cli.js"
+    "talktomedeara": "dist/cli.js"
   },
   "scripts": {
     "build": "tsc",
@@ -13,6 +13,7 @@
     "serve": "node dist/server.js",
     "setup": "node dist/setup.js",
     "test": "jest",
+    "postinstall": "node -e \"console.warn('\\n⚠️  DEPRECATION WARNING: This package has been renamed!\\n\\n✅ NEW PACKAGE: talktomedearai\\n📦 INSTALL: npm install -g talktomedearai\\n\\nThis old package will be removed in future versions.\\n')\";",
     "test:watch": "jest --watch",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
@@ -49,6 +50,7 @@
   "files": [
     "dist",
     "sounds",
+    "transition-notice.js",
     "README.md",
     "ROADMAP.md",
     "LICENSE"
