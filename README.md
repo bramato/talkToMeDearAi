@@ -258,16 +258,24 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-## 🎵 Support the Project
+## 🎵 Support the Developer
 
-**Contribuisci semplicemente ascoltando il mio album per developer!** 
+**Love coding with chill vibes?** Support this project by listening to my developer album:
 
-[![Music Album](https://img.shields.io/badge/🎵_Listen_on-Spotify-1DB954?style=for-the-badge&logo=spotify&logoColor=white)](http://open.spotify.com/intl-it/album/0hBmSuyrMWpdazYTMCV0fp?go=1&nd=1&dlsi=ce8dfc8f237340e7)
-[![Music Album](https://img.shields.io/badge/🎵_Listen_on-Apple_Music-FA57C1?style=for-the-badge&logo=apple-music&logoColor=white)](https://music.apple.com/it/album/code-chill-loops-of-relaxation/1815061487)
-[![Music Album](https://img.shields.io/badge/🎵_Listen_on-YouTube_Music-FF0000?style=for-the-badge&logo=youtube-music&logoColor=white)](https://music.youtube.com/playlist?list=OLAK5uy_lHyFL4eHr1FAikCrvsQrPYkU3AAX4DM6k)
+### **"Code Chill: Loops of Relaxation"** 🎧
 
-*Ogni ascolto supporta lo sviluppo di questo progetto! 🎧*
+*Perfect background music for your coding sessions*
 
----
+<div align="center">
+
+[![Listen on Apple Music](https://img.shields.io/badge/Apple_Music-000000?style=for-the-badge&logo=apple-music&logoColor=white)](https://music.apple.com/it/album/code-chill-loops-of-relaxation/1815061487)
+[![Listen on Spotify](https://img.shields.io/badge/Spotify-1DB954?style=for-the-badge&logo=spotify&logoColor=white)](http://open.spotify.com/intl-it/album/0hBmSuyrMWpdazYTMCV0fp?go=1&nd=1&dlsi=ce8dfc8f237340e7)
+[![Listen on YouTube Music](https://img.shields.io/badge/YouTube_Music-FF0000?style=for-the-badge&logo=youtube-music&logoColor=white)](https://music.youtube.com/playlist?list=OLAK5uy_lHyFL4eHr1FAikCrvsQrPYkU3AAX4DM6k)
+
+</div>
+
+*Every stream helps support the development of free tools like this one! 🙏*
+
+</div>
 
 **Note**: This project is optimized for use with AI agents and automation systems. For general TTS use, consider simpler alternatives.

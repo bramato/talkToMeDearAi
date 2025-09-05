@@ -12,6 +12,19 @@ import * as path from 'path';
 const program = new Command();
 const logger = new Logger();
 
+// ASCII Art Banner
+const ASCII_ART = `
+┏┳┓  ┓┓ ┏┳┓  ┳┳┓  ┳┓      ┏┓•
+ ┃ ┏┓┃┃┏ ┃ ┏┓┃┃┃┏┓┃┃┏┓┏┓┏┓┣┫┓
+ ┻ ┗┻┗┛┗ ┻ ┗┛┛ ┗┗ ┻┛┗ ┗┻┛ ┛┗┗
+                             
+`;
+
+// Function to display ASCII art banner
+function showBanner() {
+  console.log(ASCII_ART);
+}
+
 // Audio playback function
 async function playAudio(audioPath: string): Promise<void> {
   try {
@@ -45,15 +58,17 @@ async function playAudio(audioPath: string): Promise<void> {
 }
 
 program
-  .name('talktomedeara')
+  .name('talktomedearai')
   .description('TalkToMeDearAi - MCP server for OpenAI text-to-speech')
-  .version('0.1.0-alpha');
+  .version('0.1.0-alpha')
+  .addHelpText('before', ASCII_ART);
 
 // Setup command
 program
   .command('setup')
   .description('Configure OpenAI API key and preferences')
   .action(async () => {
+    showBanner();
     try {
       const configManager = new ConfigManager(logger);
       await configManager.runSetup();
@@ -87,12 +102,13 @@ program
   .option('--save-only', 'Only save audio file, do not play')
   .option('-o, --output <path>', 'Output file path')
   .action(async (text: string, options: any) => {
+    showBanner();
     try {
       const configManager = new ConfigManager(logger);
       const config = await configManager.getConfig();
       
       if (!config.openaiApiKey && !(await configManager.getOpenAIApiKey())) {
-        console.error('❌ API key not configured. Run "talktomedeara setup" first.');
+        console.error('❌ API key not configured. Run "talktomedearai setup" first.');
         process.exit(1);
       }
 
@@ -293,6 +309,7 @@ program
   .command('doctor')
   .description('Diagnose common issues')
   .action(async () => {
+    showBanner();
     console.log('🔍 TalkToMeDearAi System Diagnosis\n');
 
     try {
@@ -343,7 +360,7 @@ program
       console.log('\n🎉 Diagnosis completed!');
       
       if (!summary.hasApiKey) {
-        console.log('\n💡 Recommendation: Run "talktomedeara setup" to configure your API key.');
+        console.log('\n💡 Recommendation: Run "talktomedearai setup" to configure your API key.');
       }
 
     } catch (error) {
@@ -357,5 +374,6 @@ program.parse();
 
 // If no command provided, show help
 if (!process.argv.slice(2).length) {
+  showBanner();
   program.outputHelp();
 }
