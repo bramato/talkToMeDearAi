@@ -198,10 +198,10 @@ For teams sharing the same configuration:
 #### 1. "Tool 'speak_text' not found"
 ```bash
 # Verify configuration
-talktomedeara config show
+talktomedearai config show
 
 # Test MCP server
-talktomedeara doctor
+talktomedearai doctor
 
 # Restart Claude Code completely
 ```
@@ -212,7 +212,7 @@ talktomedeara doctor
 talktomedearai setup
 
 # Or configure manually
-talktomedeara config show
+talktomedearai config show
 ```
 
 #### 3. "Audio not playing"
@@ -223,16 +223,16 @@ sudo apt install sox alsa-utils pulseaudio
 
 # On Windows - use PowerShell (pre-installed)
 # Test with
-talktomedeara test "Test audio"
+talktomedearai test "Test audio"
 ```
 
 #### 4. "Cache full"
 ```bash
 # Clear cache
-talktomedeara cache clear
+talktomedearai cache clear
 
 # Increase cache size
-talktomedeara config show
+talktomedearai config show
 # Modify cacheMaxSize in config file
 ```
 
@@ -252,13 +252,13 @@ export LOG_LEVEL=debug
 
 ```bash
 # Complete system test
-talktomedeara doctor
+talktomedearai doctor
 
 # Specific TTS test
-talktomedeara test "This is a connectivity test"
+talktomedearai test "This is a connectivity test"
 
 # Cache statistics
-talktomedeara cache stats
+talktomedearai cache stats
 ```
 
 ## 📊 Monitoring and Analytics
@@ -267,26 +267,26 @@ talktomedeara cache stats
 
 ```bash
 # Cache statistics
-talktomedeara cache stats
+talktomedearai cache stats
 
 # Find audio by content
-talktomedeara cache find --text "error"
+talktomedearai cache find --text "error"
 
 # Find audio by voice
-talktomedeara cache find --voice nova
+talktomedearai cache find --voice nova
 ```
 
 ### Cache Management
 
 ```bash
 # Clean files older than 7 days
-talktomedeara cache clean --older-than 7d
+talktomedearai cache clean --older-than 7d
 
 # Configure size
-talktomedeara config --cache-size 1000
+talktomedearai config --cache-size 1000
 
 # Configure duration
-talktomedeara config --cache-duration 60
+talktomedearai config --cache-duration 60
 ```
 
 ## 🚀 Best Practices for Agents

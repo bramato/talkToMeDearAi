@@ -56,7 +56,7 @@ Completely close Cursor and restart it to load the MCP configuration.
 Once configured, you can ask Cursor to use voice notifications:
 
 ```
-@talktomedeara Tell me when you finish refactoring this code
+@talktomedearai Tell me when you finish refactoring this code
 ```
 
 ### In Your Scripts
@@ -68,7 +68,7 @@ If you have scripts that Cursor executes, you can add notifications:
 const { spawn } = require('child_process');
 
 function notifyComplete(message) {
-  const process = spawn('talktomedeara', ['test', message]);
+  const process = spawn('talktomedearai', ['test', message]);
   process.on('close', (code) => {
     console.log(`Notification sent: ${code === 0 ? 'success' : 'failed'}`);
   });
@@ -95,7 +95,7 @@ export function activate(context: vscode.ExtensionContext) {
   
   // Command for voice notification
   let disposable = vscode.commands.registerCommand('extension.speakText', (text: string) => {
-    exec(`talktomedeara test "${text}"`, (error, stdout, stderr) => {
+    exec(`talktomedearai test "${text}"`, (error, stdout, stderr) => {
       if (error) {
         vscode.window.showErrorMessage(`TTS Error: ${error.message}`);
         return;
@@ -116,9 +116,9 @@ export function activate(context: vscode.ExtensionContext) {
 # In your package.json
 {
   "scripts": {
-    "build": "webpack && talktomedeara test 'Build completed'",
-    "test": "jest && talktomedeara test 'Tests passed successfully' || talktomedeara test 'Tests failed, check results' --voice onyx",
-    "deploy": "npm run build && docker deploy && talktomedeara test 'Deploy completed' --voice fable"
+    "build": "webpack && talktomedearai test 'Build completed'",
+    "test": "jest && talktomedearai test 'Tests passed successfully' || talktomedearai test 'Tests failed, check results' --voice onyx",
+    "deploy": "npm run build && docker deploy && talktomedearai test 'Deploy completed' --voice fable"
   }
 }
 ```
@@ -130,7 +130,7 @@ export function activate(context: vscode.ExtensionContext) {
 # .git/hooks/post-commit
 
 COMMIT_MSG=$(git log -1 --pretty=%B)
-talktomedeara test "Commit made: $COMMIT_MSG" --voice nova
+talktomedearai test "Commit made: $COMMIT_MSG" --voice nova
 ```
 
 ### 3. Long Process Monitoring
@@ -146,9 +146,9 @@ chokidar.watch('./src').on('change', (path) => {
   // Automatic rebuild
   exec('npm run build', (error, stdout, stderr) => {
     if (error) {
-      exec('talktomedeara test "Build error" --voice onyx');
+      exec('talktomedearai test "Build error" --voice onyx');
     } else {
-      exec('talktomedeara test "Automatic build completed" --voice shimmer');
+      exec('talktomedearai test "Automatic build completed" --voice shimmer');
     }
   });
 });
@@ -172,7 +172,7 @@ def notify_review_complete(pr_number, status):
     voice = voices.get(status, 'alloy')
     
     subprocess.run([
-        'talktomedeara', 'test', message, 
+        'talktomedearai', 'test', message, 
         '--voice', voice
     ])
 
@@ -221,7 +221,7 @@ notify_review_complete(123, 'approved')
 curl -X POST http://localhost:3000/mcp/servers
 
 # Or direct test
-talktomedeara doctor
+talktomedearai doctor
 ```
 
 ### Log Debugging
@@ -243,7 +243,7 @@ const { McpClient } = require('@modelcontextprotocol/sdk');
 async function testConnection() {
   try {
     const client = new McpClient();
-    await client.connect('talktomedeara');
+    await client.connect('talktomedearai');
     
     const result = await client.callTool('speak_text', {
       text: 'MCP connection test successful!'
@@ -264,16 +264,16 @@ testConnection();
 
 ```bash
 # For development, use smaller but faster cache
-talktomedeara config --cache-size 100 --cache-duration 7
+talktomedearai config --cache-size 100 --cache-duration 7
 ```
 
 ### 2. Voice Preloading
 
 ```bash
 # Pre-generate common messages for cache
-talktomedeara test "Build completed" --save-only
-talktomedeara test "Tests passed" --save-only  
-talktomedeara test "Deploy done" --save-only
+talktomedearai test "Build completed" --save-only
+talktomedearai test "Tests passed" --save-only  
+talktomedearai test "Deploy done" --save-only
 ```
 
 ### 3. Batch Notifications
@@ -286,7 +286,7 @@ const NOTIFICATION_COOLDOWN = 5000; // 5 seconds
 function throttledNotify(message) {
   const now = Date.now();
   if (now - lastNotification > NOTIFICATION_COOLDOWN) {
-    exec(`talktomedeara test "${message}"`);
+    exec(`talktomedearai test "${message}"`);
     lastNotification = now;
   }
 }
@@ -302,7 +302,7 @@ FROM node:18
 
 RUN npm install -g talktomedearai
 # API key via secret mount
-RUN mkdir -p /root/.talktomedeara
+RUN mkdir -p /root/.talktomedearai
 
 # Build script with notifications
 COPY build-with-notify.sh /usr/local/bin/
@@ -320,7 +320,7 @@ If you also use VS Code, you can use the same pattern:
     {
       "label": "Build with notification",
       "type": "shell",
-      "command": "npm run build && talktomedeara test 'VS Code build completed'",
+      "command": "npm run build && talktomedearai test 'VS Code build completed'",
       "group": "build"
     }
   ]
@@ -362,11 +362,11 @@ jobs:
       
     - name: Notify Success
       if: success()
-      run: talktomedeara test "GitHub Actions deploy completed successfully!"
+      run: talktomedearai test "GitHub Actions deploy completed successfully!"
       
     - name: Notify Failure  
       if: failure()
-      run: talktomedeara test "GitHub Actions deploy failed!" --voice onyx
+      run: talktomedearai test "GitHub Actions deploy failed!" --voice onyx
 ```
 
 ## 📱 Mobile Development
@@ -380,7 +380,7 @@ import { exec } from 'child_process';
 export class DevNotifications {
   static notify(message, voice = 'alloy') {
     if (__DEV__) {
-      exec(`talktomedeara test "${message}" --voice ${voice}`);
+      exec(`talktomedearai test "${message}" --voice ${voice}`);
     }
   }
   
@@ -407,7 +407,7 @@ import 'dart:io';
 class TtsNotify {
   static Future<void> notify(String message, {String voice = 'alloy'}) async {
     if (Platform.environment['FLUTTER_ENV'] == 'development') {
-      await Process.run('talktomedeara', [
+      await Process.run('talktomedearai', [
         'test', 
         message, 
         '--voice', 
