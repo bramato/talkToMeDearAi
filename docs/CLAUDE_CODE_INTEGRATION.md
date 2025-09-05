@@ -1,36 +1,36 @@
 # 🔧 Claude Code Integration Guide
 
-Questa guida spiega come integrare TalkToMeDearAi con Claude Code per ricevere notifiche audio dai tuoi agenti AI.
+This guide explains how to integrate TalkToMeDearAi with Claude Code to receive audio notifications from your AI agents.
 
-## 🚀 Installazione Rapida
+## 🚀 Quick Installation
 
-### 1. Installa TalkToMeDearAi
+### 1. Install TalkToMeDearAi
 
 ```bash
-# Installazione globale
+# Global installation
 npm install -g talktomedeara
 
-# Configurazione iniziale
+# Initial configuration
 talktomedeara setup
 ```
 
-Durante il setup ti verrà chiesto:
-- **Chiave API OpenAI**: La tua chiave API (memorizzata in modo sicuro)
-- **Voce predefinita**: Scegli tra alloy, echo, fable, onyx, nova, shimmer
-- **Modello TTS**: tts-1 (veloce) o tts-1-hd (alta qualità)
-- **Dimensioni cache**: Spazio disco per file MP3 (consigliato: 500MB)
-- **Durata cache**: Giorni di conservazione file (consigliato: 30 giorni)
+During setup you will be asked:
+- **OpenAI API Key**: Your API key (stored securely)
+- **Default Voice**: Choose from alloy, echo, fable, onyx, nova, shimmer
+- **TTS Model**: tts-1 (fast) or tts-1-hd (high quality)
+- **Cache Size**: Disk space for MP3 files (recommended: 500MB)
+- **Cache Duration**: File retention days (recommended: 30 days)
 
-### 2. Configura Claude Code
+### 2. Configure Claude Code
 
-Aggiungi TalkToMeDearAi alla tua configurazione MCP di Claude Code.
+Add TalkToMeDearAi to your Claude Code MCP configuration.
 
-**Percorso configurazione:**
+**Configuration path:**
 - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
 - **Windows**: `%APPDATA%/Claude/claude_desktop_config.json`
 - **Linux**: `~/.config/claude/claude_desktop_config.json`
 
-**Configurazione:**
+**Configuration:**
 ```json
 {
   "mcpServers": {
@@ -43,137 +43,137 @@ Aggiungi TalkToMeDearAi alla tua configurazione MCP di Claude Code.
 }
 ```
 
-### 3. Riavvia Claude Code
+### 3. Restart Claude Code
 
-Chiudi completamente Claude Code e riaprilo per caricare la nuova configurazione MCP.
+Completely close Claude Code and reopen it to load the new MCP configuration.
 
-## 🎤 Utilizzo negli Agenti
+## 🎤 Usage in Agents
 
-### Tool Disponibile: `speak_text`
+### Available Tool: `speak_text`
 
-Una volta configurato, i tuoi agenti avranno accesso al tool `speak_text`:
+Once configured, your agents will have access to the `speak_text` tool:
 
 ```javascript
-// Esempio base
+// Basic example
 await mcp.callTool("speak_text", {
-  text: "Processo completato con successo!"
+  text: "Process completed successfully!"
 });
 
-// Esempio completo con opzioni
+// Complete example with options
 await mcp.callTool("speak_text", {
-  text: "Analisi dei dati completata. Trovati 42 errori critici.",
-  voice: "nova",           // Voce energica per allarmi
-  model: "tts-1-hd",      // Alta qualità
-  saveOnly: false,         // Riproduci immediatamente
-  outputPath: "./alerts/critical.mp3" // Salva anche qui
+  text: "Data analysis completed. Found 42 critical errors.",
+  voice: "nova",           // Energetic voice for alarms
+  model: "tts-1-hd",      // High quality
+  saveOnly: false,         // Play immediately
+  outputPath: "./alerts/critical.mp3" // Also save here
 });
 ```
 
-### Parametri del Tool
+### Tool Parameters
 
-| Parametro | Tipo | Obbligatorio | Default | Descrizione |
-|-----------|------|--------------|---------|-------------|
-| `text` | string | ✅ | - | Testo da convertire in audio (max 4096 caratteri) |
-| `voice` | string | ❌ | "alloy" | Voce: alloy, echo, fable, onyx, nova, shimmer |
-| `model` | string | ❌ | "tts-1" | Modello: tts-1 (veloce), tts-1-hd (qualità) |
-| `saveOnly` | boolean | ❌ | false | Se true, salva senza riprodurre |
-| `outputPath` | string | ❌ | auto | Percorso personalizzato per salvare |
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `text` | string | ✅ | - | Text to convert to audio (max 4096 characters) |
+| `voice` | string | ❌ | "alloy" | Voice: alloy, echo, fable, onyx, nova, shimmer |
+| `model` | string | ❌ | "tts-1" | Model: tts-1 (fast), tts-1-hd (quality) |
+| `saveOnly` | boolean | ❌ | false | If true, save without playing |
+| `outputPath` | string | ❌ | auto | Custom path to save |
 
-## 🎯 Esempi Pratici per Agenti
+## 🎯 Practical Examples for Agents
 
-### 1. Notifiche di Completamento
+### 1. Completion Notifications
 
 ```javascript
-// Al termine di un'analisi lunga
+// At the end of a long analysis
 await mcp.callTool("speak_text", {
-  text: `Analisi completata in ${duration} secondi. Trovati ${results.length} risultati.`,
+  text: `Analysis completed in ${duration} seconds. Found ${results.length} results.`,
   voice: "alloy"
 });
 ```
 
-### 2. Allarmi Critici
+### 2. Critical Alerts
 
 ```javascript
-// Per errori critici
+// For critical errors
 await mcp.callTool("speak_text", {
-  text: "Attenzione! Rilevato errore critico nel sistema. Intervento richiesto.",
-  voice: "onyx",      // Voce autoritaria
-  model: "tts-1-hd"   // Alta qualità per importanza
+  text: "Attention! Critical system error detected. Intervention required.",
+  voice: "onyx",      // Authoritative voice
+  model: "tts-1-hd"   // High quality for importance
 });
 ```
 
-### 3. Promemoria Periodici
+### 3. Periodic Reminders
 
 ```javascript
-// Per promemoria o timer
+// For reminders or timers
 await mcp.callTool("speak_text", {
-  text: "Reminder: Meeting tra 5 minuti nella sala conferenze.",
-  voice: "shimmer"    // Voce dolce per promemoria
+  text: "Reminder: Meeting in 5 minutes in the conference room.",
+  voice: "shimmer"    // Sweet voice for reminders
 });
 ```
 
-### 4. Aggiornamenti di Progresso
+### 4. Progress Updates
 
 ```javascript
-// Durante processi lunghi
+// During long processes
 await mcp.callTool("speak_text", {
-  text: `Progresso: ${Math.round(progress * 100)}% completato. Stima rimanente: ${eta} minuti.`,
-  voice: "nova"       // Voce energica per aggiornamenti
+  text: `Progress: ${Math.round(progress * 100)}% completed. Estimated remaining: ${eta} minutes.`,
+  voice: "nova"       // Energetic voice for updates
 });
 ```
 
-## 🎨 Selezione delle Voci per Contesto
+## 🎨 Voice Selection for Context
 
-### **Alloy** (Neutrale e bilanciata)
-- ✅ Notifiche generali
-- ✅ Aggiornamenti di stato
-- ✅ Conferme di operazioni
+### **Alloy** (Neutral and balanced)
+- ✅ General notifications
+- ✅ Status updates
+- ✅ Operation confirmations
 
-### **Echo** (Maschile e chiara)
-- ✅ Annunci importanti
-- ✅ Istruzioni operative
-- ✅ Report finali
+### **Echo** (Male and clear)
+- ✅ Important announcements
+- ✅ Operational instructions
+- ✅ Final reports
 
-### **Fable** (Espressiva e drammatica)
-- ✅ Celebrazioni di successo
-- ✅ Annunci significativi
-- ✅ Storytelling sui risultati
+### **Fable** (Expressive and dramatic)
+- ✅ Success celebrations
+- ✅ Significant announcements
+- ✅ Results storytelling
 
-### **Onyx** (Profonda e autoritaria)
-- ✅ Allarmi critici
-- ✅ Errori gravi
-- ✅ Avvisi di sicurezza
+### **Onyx** (Deep and authoritative)
+- ✅ Critical alarms
+- ✅ Serious errors
+- ✅ Security warnings
 
-### **Nova** (Giovane e energica)
-- ✅ Aggiornamenti di progresso
-- ✅ Notifiche positive
-- ✅ Incoraggiamenti
+### **Nova** (Young and energetic)
+- ✅ Progress updates
+- ✅ Positive notifications
+- ✅ Encouragements
 
-### **Shimmer** (Dolce e melodiosa)
-- ✅ Promemoria gentili
-- ✅ Conferme delicate
-- ✅ Messaggi di benvenuto
+### **Shimmer** (Sweet and melodious)
+- ✅ Gentle reminders
+- ✅ Delicate confirmations
+- ✅ Welcome messages
 
-## ⚙️ Configurazione Avanzata
+## ⚙️ Advanced Configuration
 
-### Variabili d'Ambiente
+### Environment Variables
 
-Puoi personalizzare il comportamento tramite variabili d'ambiente:
+You can customize behavior through environment variables:
 
 ```bash
-# Livello di log
+# Log level
 export LOG_LEVEL=debug
 
-# Percorso cache personalizzato
+# Custom cache path
 export TALKTOMEDEARA_CACHE_DIR=/path/to/cache
 
-# Disabilita audio (solo salvataggio)
+# Disable audio (save only)
 export TALKTOMEDEARA_AUDIO_DISABLED=true
 ```
 
-### Configurazione per Team
+### Team Configuration
 
-Per team che condividono la stessa configurazione:
+For teams sharing the same configuration:
 
 ```json
 {
@@ -193,113 +193,113 @@ Per team che condividono la stessa configurazione:
 
 ## 🔧 Troubleshooting
 
-### Problemi Comuni
+### Common Issues
 
-#### 1. "Tool 'speak_text' non trovato"
+#### 1. "Tool 'speak_text' not found"
 ```bash
-# Verifica configurazione
+# Verify configuration
 talktomedeara config show
 
-# Test del server MCP
+# Test MCP server
 talktomedeara doctor
 
-# Riavvia Claude Code completamente
+# Restart Claude Code completely
 ```
 
-#### 2. "API Key non configurata"
+#### 2. "API Key not configured"
 ```bash
-# Riconfigura
+# Reconfigure
 talktomedeara setup
 
-# Oppure configura manualmente
+# Or configure manually
 talktomedeara config show
 ```
 
-#### 3. "Audio non riprodotto"
+#### 3. "Audio not playing"
 ```bash
-# Su macOS - dovrebbe funzionare automaticamente con afplay
-# Su Linux - installa player audio
+# On macOS - should work automatically with afplay
+# On Linux - install audio player
 sudo apt install sox alsa-utils pulseaudio
 
-# Su Windows - usa PowerShell (preinstallato)
-# Testa con
-talktomedeara test "Audio di prova"
+# On Windows - use PowerShell (pre-installed)
+# Test with
+talktomedeara test "Test audio"
 ```
 
-#### 4. "Cache piena"
+#### 4. "Cache full"
 ```bash
-# Pulisci cache
+# Clear cache
 talktomedeara cache clear
 
-# Aumenta dimensioni cache
+# Increase cache size
 talktomedeara config show
-# Modifica cacheMaxSize nel file config
+# Modify cacheMaxSize in config file
 ```
 
-### Debug Avanzato
+### Advanced Debug
 
-Abilita logging dettagliato:
+Enable detailed logging:
 
 ```bash
-# Esporta log dettagliati
+# Export detailed logs
 export LOG_LEVEL=debug
 
-# Poi avvia Claude Code da terminale per vedere i log
+# Then start Claude Code from terminal to see logs
 /Applications/Claude.app/Contents/MacOS/Claude
 ```
 
-### Test di Connettività
+### Connectivity Tests
 
 ```bash
-# Test completo del sistema
+# Complete system test
 talktomedeara doctor
 
-# Test specifico TTS
-talktomedeara test "Questo è un test di connettività"
+# Specific TTS test
+talktomedeara test "This is a connectivity test"
 
-# Statistiche cache
+# Cache statistics
 talktomedeara cache stats
 ```
 
-## 📊 Monitoraggio e Analytics
+## 📊 Monitoring and Analytics
 
-### Statistiche Utilizzo
+### Usage Statistics
 
 ```bash
-# Statistiche cache
+# Cache statistics
 talktomedeara cache stats
 
-# Trova audio per contenuto
-talktomedeara cache find --text "errore"
+# Find audio by content
+talktomedeara cache find --text "error"
 
-# Trova audio per voce
+# Find audio by voice
 talktomedeara cache find --voice nova
 ```
 
-### Gestione Cache
+### Cache Management
 
 ```bash
-# Pulisci file più vecchi di 7 giorni
+# Clean files older than 7 days
 talktomedeara cache clean --older-than 7d
 
-# Configura dimensioni
+# Configure size
 talktomedeara config --cache-size 1000
 
-# Configura durata
+# Configure duration
 talktomedeara config --cache-duration 60
 ```
 
-## 🚀 Best Practices per Agenti
+## 🚀 Best Practices for Agents
 
-1. **Usa cache intelligentemente**: Testi simili verranno riutilizzati automaticamente
-2. **Scegli voci appropriate**: Abbina la voce al tipo di messaggio
-3. **Limita la lunghezza**: Max 4096 caratteri per messaggio
-4. **Gestisci gli errori**: Sempre controllare il risultato del tool
-5. **Non abusare**: Evita notifiche troppo frequenti per non disturbare
+1. **Use cache intelligently**: Similar texts will be automatically reused
+2. **Choose appropriate voices**: Match voice to message type
+3. **Limit length**: Max 4096 characters per message
+4. **Handle errors**: Always check tool results
+5. **Don't abuse**: Avoid too frequent notifications to avoid disturbance
 
-## 💡 Esempi di Integrazione Avanzata
+## 💡 Advanced Integration Examples
 
-### Pattern Observer per Agenti
+### Observer Pattern for Agents
 
 ```javascript
 class AgentNotifier {
@@ -314,16 +314,16 @@ class AgentNotifier {
   async notifyError(error, severity = "medium") {
     const voice = severity === "critical" ? "onyx" : "echo";
     await mcp.callTool("speak_text", {
-      text: `Errore ${severity}: ${error.message}`,
+      text: `${severity} error: ${error.message}`,
       voice: voice,
       model: "tts-1-hd"
     });
   }
 
   async notifyProgress(percentage, eta) {
-    if (percentage % 25 === 0) { // Solo ogni 25%
+    if (percentage % 25 === 0) { // Only every 25%
       await mcp.callTool("speak_text", {
-        text: `Progresso: ${percentage}% - ETA: ${eta}`,
+        text: `Progress: ${percentage}% - ETA: ${eta}`,
         voice: "nova"
       });
     }
@@ -333,6 +333,6 @@ class AgentNotifier {
 
 ---
 
-**🎉 Congratulazioni!** Hai configurato con successo TalkToMeDearAi con Claude Code. I tuoi agenti ora possono comunicare vocalmente con te!
+**🎉 Congratulations!** You have successfully configured TalkToMeDearAi with Claude Code. Your agents can now communicate vocally with you!
 
-Per supporto tecnico: [GitHub Issues](https://github.com/bramato/talkToMeDearAi/issues)
+For technical support: [GitHub Issues](https://github.com/bramato/talkToMeDearAi/issues)

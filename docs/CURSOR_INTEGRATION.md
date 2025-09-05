@@ -1,35 +1,35 @@
 # 🎯 Cursor Integration Guide  
 
-Questa guida spiega come integrare TalkToMeDearAi con Cursor per ricevere notifiche audio dai tuoi agenti AI durante lo sviluppo.
+This guide explains how to integrate TalkToMeDearAi with Cursor to receive audio notifications from your AI agents during development.
 
-## 🚀 Installazione per Cursor
+## 🚀 Installation for Cursor
 
-### 1. Installa TalkToMeDearAi Globalmente
+### 1. Install TalkToMeDearAi Globally
 
 ```bash
-# Installazione via npm
+# Installation via npm
 npm install -g talktomedeara
 
-# Configurazione interattiva
+# Interactive configuration
 talktomedeara setup
 ```
 
-Il setup ti guiderà attraverso:
-- **Chiave API OpenAI**: Inserisci la tua chiave (salvata in keychain sicuro)
-- **Voce default**: Scegli la voce per le notifiche (alloy consigliata per coding)
-- **Modello TTS**: tts-1 per velocità, tts-1-hd per qualità
-- **Cache**: Configurazione automatica (500MB, 30 giorni)
+The setup will guide you through:
+- **OpenAI API Key**: Enter your key (saved in secure keychain)
+- **Default Voice**: Choose voice for notifications (alloy recommended for coding)
+- **TTS Model**: tts-1 for speed, tts-1-hd for quality
+- **Cache**: Automatic configuration (500MB, 30 days)
 
-### 2. Configura Cursor per MCP
+### 2. Configure Cursor for MCP
 
-Cursor supporta MCP attraverso configurazione JSON. Crea o modifica:
+Cursor supports MCP through JSON configuration. Create or modify:
 
-**File di configurazione:**
+**Configuration file:**
 - **macOS**: `~/Library/Application Support/Cursor/User/globalStorage/cursor.mcp/config.json`  
 - **Windows**: `%APPDATA%/Cursor/User/globalStorage/cursor.mcp/config.json`
 - **Linux**: `~/.config/Cursor/User/globalStorage/cursor.mcp/config.json`
 
-**Contenuto configurazione:**
+**Configuration content:**
 ```json
 {
   "mcpServers": {
@@ -45,26 +45,26 @@ Cursor supporta MCP attraverso configurazione JSON. Crea o modifica:
 }
 ```
 
-### 3. Riavvia Cursor
+### 3. Restart Cursor
 
-Chiudi completamente Cursor e riavvialo per caricare la configurazione MCP.
+Completely close Cursor and restart it to load the MCP configuration.
 
-## 🔧 Utilizzo con Cursor AI
+## 🔧 Usage with Cursor AI
 
-### In Chat con Cursor
+### In Chat with Cursor
 
-Una volta configurato, puoi chiedere a Cursor di usare le notifiche vocali:
+Once configured, you can ask Cursor to use voice notifications:
 
 ```
-@talktomedeara Dimmi quando hai finito di refactorare questo codice
+@talktomedeara Tell me when you finish refactoring this code
 ```
 
-### Nei Tuoi Script
+### In Your Scripts
 
-Se hai script che Cursor esegue, puoi aggiungere notifiche:
+If you have scripts that Cursor executes, you can add notifications:
 
 ```javascript
-// In uno script Node.js
+// In a Node.js script
 const { spawn } = require('child_process');
 
 function notifyComplete(message) {
@@ -74,26 +74,26 @@ function notifyComplete(message) {
   });
 }
 
-// Uso
+// Usage
 async function buildProject() {
   console.log('Building project...');
-  // ... logica di build
-  notifyComplete('Build completata con successo!');
+  // ... build logic
+  notifyComplete('Build completed successfully!');
 }
 ```
 
-### Con Extension Custom
+### With Custom Extensions
 
-Se sviluppi extension per Cursor, puoi integrare direttamente:
+If you develop extensions for Cursor, you can integrate directly:
 
 ```typescript
-// Extension per Cursor
+// Extension for Cursor
 import * as vscode from 'vscode';
 import { exec } from 'child_process';
 
 export function activate(context: vscode.ExtensionContext) {
   
-  // Comando per notifica vocale
+  // Command for voice notification
   let disposable = vscode.commands.registerCommand('extension.speakText', (text: string) => {
     exec(`talktomedeara test "${text}"`, (error, stdout, stderr) => {
       if (error) {
@@ -108,32 +108,32 @@ export function activate(context: vscode.ExtensionContext) {
 }
 ```
 
-## 🎨 Esempi Pratici per Development
+## 🎨 Practical Examples for Development
 
-### 1. Notifiche Build/Test
+### 1. Build/Test Notifications
 
 ```bash
-# Nel tuo package.json
+# In your package.json
 {
   "scripts": {
-    "build": "webpack && talktomedeara test 'Build completata'",
-    "test": "jest && talktomedeara test 'Test superati con successo' || talktomedeara test 'Test falliti, controlla i risultati' --voice onyx",
-    "deploy": "npm run build && docker deploy && talktomedeara test 'Deploy completato' --voice fable"
+    "build": "webpack && talktomedeara test 'Build completed'",
+    "test": "jest && talktomedeara test 'Tests passed successfully' || talktomedeara test 'Tests failed, check results' --voice onyx",
+    "deploy": "npm run build && docker deploy && talktomedeara test 'Deploy completed' --voice fable"
   }
 }
 ```
 
-### 2. Git Hooks con Notifiche
+### 2. Git Hooks with Notifications
 
 ```bash
 #!/bin/sh
 # .git/hooks/post-commit
 
 COMMIT_MSG=$(git log -1 --pretty=%B)
-talktomedeara test "Commit effettuato: $COMMIT_MSG" --voice nova
+talktomedeara test "Commit made: $COMMIT_MSG" --voice nova
 ```
 
-### 3. Monitoring di Processi Lunghi
+### 3. Long Process Monitoring
 
 ```javascript
 // watcher.js
@@ -143,12 +143,12 @@ const { exec } = require('child_process');
 chokidar.watch('./src').on('change', (path) => {
   console.log(`File changed: ${path}`);
   
-  // Rebuild automatico
+  // Automatic rebuild
   exec('npm run build', (error, stdout, stderr) => {
     if (error) {
-      exec('talktomedeara test "Errore nel build" --voice onyx');
+      exec('talktomedeara test "Build error" --voice onyx');
     } else {
-      exec('talktomedeara test "Build automatico completato" --voice shimmer');
+      exec('talktomedeara test "Automatic build completed" --voice shimmer');
     }
   });
 });
@@ -168,7 +168,7 @@ def notify_review_complete(pr_number, status):
         'pending': 'alloy'
     }
     
-    message = f"Code review per PR {pr_number}: {status}"
+    message = f"Code review for PR {pr_number}: {status}"
     voice = voices.get(status, 'alloy')
     
     subprocess.run([
@@ -176,65 +176,65 @@ def notify_review_complete(pr_number, status):
         '--voice', voice
     ])
 
-# Uso con GitHub webhooks
+# Usage with GitHub webhooks
 notify_review_complete(123, 'approved')
 ```
 
-## 🎤 Voci Consigliate per Development
+## 🎤 Recommended Voices for Development
 
-### **Alloy** (Default universale)
-- ✅ Notifiche build success
+### **Alloy** (Universal default)
+- ✅ Build success notifications
 - ✅ Test passing
 - ✅ Commit notifications
 
-### **Nova** (Energica - per progressi)
-- ✅ Hot reload completato
+### **Nova** (Energetic - for progress)
+- ✅ Hot reload completed
 - ✅ Server started
 - ✅ Development updates
 
-### **Echo** (Chiara - per info importanti)
-- ✅ Deploy completato
-- ✅ Database migrato
+### **Echo** (Clear - for important info)
+- ✅ Deploy completed
+- ✅ Database migrated
 - ✅ Release published
 
-### **Onyx** (Autoritaria - per errori)
+### **Onyx** (Authoritative - for errors)
 - ✅ Build failed
 - ✅ Test failures
 - ✅ Security alerts
 
-### **Fable** (Drammatica - per celebrazioni)
-- ✅ Release major
-- ✅ Milestone raggiunta
-- ✅ Feature completata
+### **Fable** (Dramatic - for celebrations)
+- ✅ Major release
+- ✅ Milestone reached
+- ✅ Feature completed
 
-### **Shimmer** (Dolce - per promemoria)
+### **Shimmer** (Sweet - for reminders)
 - ✅ Break time reminders
 - ✅ Meeting notifications
 - ✅ Gentle updates
 
-## 🔍 Debug e Troubleshooting
+## 🔍 Debug and Troubleshooting
 
-### Verifica Configurazione Cursor
+### Verify Cursor Configuration
 
 ```bash
-# Test se Cursor riconosce il server MCP
+# Test if Cursor recognizes the MCP server
 curl -X POST http://localhost:3000/mcp/servers
 
-# Oppure test diretto
+# Or direct test
 talktomedeara doctor
 ```
 
 ### Log Debugging
 
 ```bash
-# Abilita debug logging
+# Enable debug logging
 export LOG_LEVEL=debug
 
-# Avvia Cursor da terminale per vedere log
+# Start Cursor from terminal to see logs
 /Applications/Cursor.app/Contents/MacOS/Cursor
 ```
 
-### Test Connessione MCP
+### Test MCP Connection
 
 ```javascript
 // test-mcp.js
@@ -246,7 +246,7 @@ async function testConnection() {
     await client.connect('talktomedeara');
     
     const result = await client.callTool('speak_text', {
-      text: 'Test connessione MCP riuscito!'
+      text: 'MCP connection test successful!'
     });
     
     console.log('MCP connection success:', result);
@@ -263,25 +263,25 @@ testConnection();
 ### 1. Cache Optimization
 
 ```bash
-# Per development, usa cache più piccola ma veloce
+# For development, use smaller but faster cache
 talktomedeara config --cache-size 100 --cache-duration 7
 ```
 
 ### 2. Voice Preloading
 
 ```bash
-# Pre-genera messaggi comuni per cache
-talktomedeara test "Build completata" --save-only
-talktomedeara test "Test superati" --save-only  
-talktomedeara test "Deploy effettuato" --save-only
+# Pre-generate common messages for cache
+talktomedeara test "Build completed" --save-only
+talktomedeara test "Tests passed" --save-only  
+talktomedeara test "Deploy done" --save-only
 ```
 
 ### 3. Batch Notifications
 
 ```javascript
-// Evita spam di notifiche
+// Avoid notification spam
 let lastNotification = 0;
-const NOTIFICATION_COOLDOWN = 5000; // 5 secondi
+const NOTIFICATION_COOLDOWN = 5000; // 5 seconds
 
 function throttledNotify(message) {
   const now = Date.now();
@@ -292,26 +292,26 @@ function throttledNotify(message) {
 }
 ```
 
-## 🔧 Integrazioni Avanzate
+## 🔧 Advanced Integrations
 
-### Con Docker
+### With Docker
 
 ```dockerfile
-# Dockerfile per dev container con TTS
+# Dockerfile for dev container with TTS
 FROM node:18
 
 RUN npm install -g talktomedeara
-# API key tramite secret mount
+# API key via secret mount
 RUN mkdir -p /root/.talktomedeara
 
-# Script di build con notifiche
+# Build script with notifications
 COPY build-with-notify.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/build-with-notify.sh
 ```
 
-### Con VS Code Tasks (per confronto)
+### With VS Code Tasks (for comparison)
 
-Se usi anche VS Code, puoi usare lo stesso pattern:
+If you also use VS Code, you can use the same pattern:
 
 ```json
 {
@@ -320,14 +320,14 @@ Se usi anche VS Code, puoi usare lo stesso pattern:
     {
       "label": "Build with notification",
       "type": "shell",
-      "command": "npm run build && talktomedeara test 'Build VS Code completata'",
+      "command": "npm run build && talktomedeara test 'VS Code build completed'",
       "group": "build"
     }
   ]
 }
 ```
 
-### Con GitHub Actions
+### With GitHub Actions
 
 ```yaml
 # .github/workflows/notify-on-deploy.yml
@@ -362,11 +362,11 @@ jobs:
       
     - name: Notify Success
       if: success()
-      run: talktomedeara test "Deploy GitHub Actions completato con successo!"
+      run: talktomedeara test "GitHub Actions deploy completed successfully!"
       
     - name: Notify Failure  
       if: failure()
-      run: talktomedeara test "Deploy GitHub Actions fallito!" --voice onyx
+      run: talktomedeara test "GitHub Actions deploy failed!" --voice onyx
 ```
 
 ## 📱 Mobile Development
@@ -374,7 +374,7 @@ jobs:
 ### React Native
 
 ```javascript
-// Per React Native con Cursor
+// For React Native with Cursor
 import { exec } from 'child_process';
 
 export class DevNotifications {
@@ -385,15 +385,15 @@ export class DevNotifications {
   }
   
   static onBuildComplete() {
-    this.notify('React Native build completata', 'nova');
+    this.notify('React Native build completed', 'nova');
   }
   
   static onTestsPass() {
-    this.notify('Tutti i test superati', 'fable');
+    this.notify('All tests passed', 'fable');
   }
   
   static onHotReload() {
-    this.notify('Hot reload completato', 'shimmer');
+    this.notify('Hot reload completed', 'shimmer');
   }
 }
 ```
@@ -417,19 +417,19 @@ class TtsNotify {
   }
   
   static Future<void> onHotReload() async {
-    await notify('Flutter hot reload completato', voice: 'nova');
+    await notify('Flutter hot reload completed', voice: 'nova');
   }
   
   static Future<void> onBuildComplete() async {
-    await notify('Flutter build completata', voice: 'fable');
+    await notify('Flutter build completed', voice: 'fable');
   }
 }
 ```
 
 ---
 
-**🎉 Perfetto!** Ora Cursor può comunicare vocalmente con te durante lo sviluppo. 
+**🎉 Perfect!** Now Cursor can communicate vocally with you during development. 
 
-**Pro tip**: Inizia con notifiche semplici (build success/fail) e aggiungi complessità gradualmente.
+**Pro tip**: Start with simple notifications (build success/fail) and add complexity gradually.
 
-Per supporto: [GitHub Issues](https://github.com/bramato/talkToMeDearAi/issues) | [Discussions](https://github.com/bramato/talkToMeDearAi/discussions)
+For support: [GitHub Issues](https://github.com/bramato/talkToMeDearAi/issues) | [Discussions](https://github.com/bramato/talkToMeDearAi/discussions)
