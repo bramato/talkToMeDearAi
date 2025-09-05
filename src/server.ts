@@ -131,27 +131,10 @@ export class TalkToMeServer {
   private getStartNotificationTool(): MCPTool {
     return {
       name: 'start_notification',
-      description: 'Play an energetic audio notification to indicate the start of a process or task',
+      description: 'Play a predefined energetic audio notification to indicate the start of a process or task. Uses sounds/start.mp3 file.',
       inputSchema: {
         type: 'object',
         properties: {
-          message: {
-            type: 'string',
-            description: 'Custom message to announce (optional)',
-            default: 'Processo avviato',
-          },
-          voice: {
-            type: 'string',
-            description: 'Voice to use for the notification',
-            enum: ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'],
-            default: 'nova',
-          },
-          model: {
-            type: 'string',
-            description: 'OpenAI TTS model to use',
-            enum: ['tts-1', 'tts-1-hd'],
-            default: 'tts-1',
-          },
           saveOnly: {
             type: 'boolean',
             description: 'If true, only save the audio file without playing it',
@@ -166,27 +149,10 @@ export class TalkToMeServer {
   private getAlertNotificationTool(): MCPTool {
     return {
       name: 'alert_notification',
-      description: 'Play an attention-grabbing audio notification to indicate an alert or important warning',
+      description: 'Play a predefined attention-grabbing audio notification to indicate an alert or important warning. Uses sounds/alert.mp3 file.',
       inputSchema: {
         type: 'object',
         properties: {
-          message: {
-            type: 'string',
-            description: 'Custom alert message to announce (optional)',
-            default: 'Attenzione! Richiesta immediata',
-          },
-          voice: {
-            type: 'string',
-            description: 'Voice to use for the notification',
-            enum: ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'],
-            default: 'onyx',
-          },
-          model: {
-            type: 'string',
-            description: 'OpenAI TTS model to use',
-            enum: ['tts-1', 'tts-1-hd'],
-            default: 'tts-1',
-          },
           saveOnly: {
             type: 'boolean',
             description: 'If true, only save the audio file without playing it',
@@ -201,27 +167,10 @@ export class TalkToMeServer {
   private getFinishNotificationTool(): MCPTool {
     return {
       name: 'finish_notification',
-      description: 'Play a satisfying audio notification to indicate successful completion of a process or task',
+      description: 'Play a predefined satisfying audio notification to indicate successful completion of a process or task. Uses sounds/finish.mp3 file.',
       inputSchema: {
         type: 'object',
         properties: {
-          message: {
-            type: 'string',
-            description: 'Custom completion message to announce (optional)',
-            default: 'Operazione completata con successo',
-          },
-          voice: {
-            type: 'string',
-            description: 'Voice to use for the notification',
-            enum: ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'],
-            default: 'alloy',
-          },
-          model: {
-            type: 'string',
-            description: 'OpenAI TTS model to use',
-            enum: ['tts-1', 'tts-1-hd'],
-            default: 'tts-1',
-          },
           saveOnly: {
             type: 'boolean',
             description: 'If true, only save the audio file without playing it',
@@ -235,83 +184,24 @@ export class TalkToMeServer {
 
   private async handleAudioNotification(type: AudioNotificationType, args: AudioNotificationRequest) {
     try {
-      const defaultMessages = {
-        start: 'Processo avviato',
-        alert: 'Attenzione! Richiesta immediata',
-        finish: 'Operazione completata con successo'
-      };
+      this.logger.info(`Processing ${type} notification`);
 
-      const defaultVoices = {
-        start: 'nova' as const,
-        alert: 'onyx' as const,
-        finish: 'alloy' as const
-      };
-
-      const message = args.message || defaultMessages[type];
-      const voice = args.voice || defaultVoices[type];
-      const model = args.model || 'tts-1';
-
-      this.logger.info(`Processing ${type} notification`, {
-        message,
-        voice,
-        model
-      });
-
-      // Parameters for TTS processing
       const saveOnly = args.saveOnly || false;
-
-      // Check cache first
-      const cacheKey = this.cacheManager.generateCacheKey(message, voice, model);
-      const cachedPath = await this.cacheManager.get(cacheKey);
-
-      if (cachedPath) {
-        this.logger.info(`Cache hit for ${type} notification`, { cacheKey });
-        
-        if (!saveOnly) {
-          await this.playAudio(cachedPath);
-        }
-
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify({
-                success: true,
-                type,
-                audioPath: cachedPath,
-                cached: true,
-                message: `${type} notification played using cached audio (${voice} voice)`,
-              }),
-            },
-          ],
-        };
+      
+      // Use predefined sound files instead of TTS
+      const soundFilePath = await this.getNotificationSoundPath(type);
+      
+      if (!soundFilePath) {
+        throw new Error(`Sound file not found for ${type} notification`);
       }
 
-      // Generate new audio
-      const audioBuffer = await this.ttsClient.generateSpeech({
-        text: message,
-        voice,
-        model,
-      });
-
-      // Save to cache
-      const audioPath = await this.cacheManager.set(
-        cacheKey,
-        audioBuffer,
-        {
-          text: message,
-          voice,
-          model,
-        }
-      );
-
-      this.logger.info(`Generated new ${type} notification audio`, { 
-        audioPath,
-        size: audioBuffer.length 
+      this.logger.info(`Using predefined sound file`, { 
+        type,
+        audioPath: soundFilePath 
       });
 
       if (!saveOnly) {
-        await this.playAudio(audioPath);
+        await this.playAudio(soundFilePath);
       }
 
       return {
@@ -321,9 +211,9 @@ export class TalkToMeServer {
             text: JSON.stringify({
               success: true,
               type,
-              audioPath,
-              cached: false,
-              message: `${type} notification played and cached (${voice} voice)`,
+              audioPath: soundFilePath,
+              predefined: true,
+              message: `${type} notification played using predefined sound`,
             }),
           },
         ],
@@ -343,6 +233,34 @@ export class TalkToMeServer {
           },
         ],
       };
+    }
+  }
+
+  private async getNotificationSoundPath(type: AudioNotificationType): Promise<string | null> {
+    const { promises: fs } = await import('fs');
+    const path = await import('path');
+    
+    // Check in project sounds directory first
+    const projectSoundsDir = path.join(process.cwd(), 'sounds');
+    const projectSoundFile = path.join(projectSoundsDir, `${type}.mp3`);
+    
+    try {
+      await fs.access(projectSoundFile);
+      return projectSoundFile;
+    } catch {
+      // If not found in project, check in package installation directory
+      const packageDir = path.dirname(require.resolve('../package.json'));
+      const packageSoundFile = path.join(packageDir, 'sounds', `${type}.mp3`);
+      
+      try {
+        await fs.access(packageSoundFile);
+        return packageSoundFile;
+      } catch {
+        this.logger.warn(`Sound file not found for ${type} notification`, {
+          checkedPaths: [projectSoundFile, packageSoundFile]
+        });
+        return null;
+      }
     }
   }
 

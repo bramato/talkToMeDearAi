@@ -48,6 +48,7 @@
   },
   "files": [
     "dist",
+    "sounds",
     "README.md",
     "ROADMAP.md",
     "LICENSE"
